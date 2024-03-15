@@ -1,16 +1,102 @@
-<div class="flex flex-col gap-4">
-  <mat-form-field appearance="outline">
-    <mat-label for="name">Nombre de la comida</mat-label>
-    <input matInput placeholder="Ejem. Pizza" id="name" type="text" [formControl]="name">
-    @if (name.invalid) {
-      <mat-error>{{showValue()}}</mat-error>
-    }
-    <mat-icon matSuffix>food</mat-icon>
-  </mat-form-field>
-  <div class="flex gap-4">
-    <button mat-flat-button color="primary" (click)="showValue()">Enviar</button>
-    <button mat-flat-button color="primary" (click)="changeValue()">Cambiar Valor</button>
+<form [formGroup]="form" class="max-w-3xl p-4">
+  <!---Campo de Nombre-->
+  <div class="w-full">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Nombre</mat-label>
+      <input matInput placeholder="Ejem.Pizza" formControlName="name" />
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      @if(name?.invalid && (name?.dirty || name?.touched)){
+      <mat-error>
+        @if(name?.hasError('required')){
+        <span class="text-xs">Este campo es requerido</span>
+        }
+      </mat-error>
+      }
+    </mat-form-field>
   </div>
-</div>
 
+  <!---Campo de Descripción-->
+  <div class="w-full">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Descripción</mat-label>
+      <input matInput placeholder="Ejem.Pizza" formControlName="description" />
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      @if(description?.invalid && (description?.dirty || description?.touched)){
+      <mat-error>
+        @if(description?.hasError('required')){
+        <span class="text-xs">Este campo es requerido</span>
+        } @if(description?.hasError('minlength')){
+        <span class="text-xs">
+          Minimo de caracteres requeridos es de
+          {{ description?.getError("minlength").requiredLength }}, tienes
+          {{ description?.getError("minlength").actualLength }}
+        </span>
+        }
+      </mat-error>
+      }
+    </mat-form-field>
+  </div>
 
+  <!---Campo de Imagen-->
+  <div class="w-full">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Imagen</mat-label>
+      <input matInput placeholder="Ejem.Pizza" formControlName="image" />
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      @if(image?.invalid && (image?.dirty || image?.touched)){
+      <mat-error>
+        @if(image?.hasError('required')){
+        <span class="text-xs">Este campo es requerido</span>
+        }
+      </mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <!---Campo de Categoria-->
+  <div class="w-full">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Categoria</mat-label>
+      <mat-select formControlName="category">
+          <mat-option [value]="'drink'">Bebida</mat-option>
+          <mat-option [value]="'food'">Comida</mat-option>
+      </mat-select>
+      @if(category?.invalid && (category?.dirty || category?.touched)){
+        <mat-error>
+          @if(category?.hasError('required')){
+          <span class="text-xs">Este campo es requerido</span>
+          }
+        </mat-error>
+        }
+    </mat-form-field>
+  </div>
+
+  <!---Campo de Precio-->
+  <div class="w-full">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Precio</mat-label>
+      <input
+        matInput
+        class= "example-right-align"
+        placeholder="Ejem.Pizza"
+        type="number"
+        formControlName="price"
+      />
+      <span matTextPrefix>$&nbsp;</span>
+      <span matTextSuffix>.00</span>
+      @if(price?.invalid && (price?.dirty || price?.touched)){
+      <mat-error>
+        @if(price?.hasError('required')){
+        <span class="text-xs">Este campo es requerido</span>
+        } @if(price?.hasError('min')){
+        <span class="text-xs">
+          El valor minimo es de {{ price?.getError("min").min }} el valor actual
+          es de {{ price?.getError("min").actual }}
+        </span>
+        }
+      </mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="sendData()">Enviar</button>
+</form>

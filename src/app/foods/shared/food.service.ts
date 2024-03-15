@@ -53,4 +53,29 @@ export class FoodService {
   public getAllFoods():Food[]{
     return this.menu;
   }
+
+  //Añadir nueva comida 
+  public addFood(food:Food){
+    this.menu.push(food);
+  }
+
+  //Actualizar comida
+  public updateFood(newFood:Food){
+    this.menu.forEach((food, index)=>{
+      if(food.id == newFood.id){
+        food = newFood;
+      }
+    })
+  }
+
+  //Eliminar comida
+  public deleteFood(deleteFood:Food){
+    this.menu.forEach((food, index)=>{
+
+      if (food.id == deleteFood.id){
+        this.menu.splice(index,1)
+      }
+
+    })
+  }
 }
