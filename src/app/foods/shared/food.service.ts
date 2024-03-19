@@ -54,6 +54,10 @@ export class FoodService {
     return this.menu;
   }
 
+  public getOne(id: number): Food | undefined {
+    return this.menu.find(item => item.id == id);
+  }
+
   //Añadir nueva comida 
   public addFood(food:Food){
     this.menu.push(food);
@@ -63,7 +67,7 @@ export class FoodService {
   public updateFood(newFood:Food){
     this.menu.forEach((food, index)=>{
       if(food.id == newFood.id){
-        food = newFood;
+        this.menu[index] = newFood;
       }
     })
   }
