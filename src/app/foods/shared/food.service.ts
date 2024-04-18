@@ -1,85 +1,35 @@
 import { Injectable } from '@angular/core';
 import { Food } from './food.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment.development';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FoodService {
 
-  menu: Food[]=[
-    {
-      id: 1,
-      name: 'Pizza',
-      description: 'Hawaiana',
-      category:'Food',
-      image:'https://cdn2.cocinadelirante.com/sites/default/files/images/2019/11/como-hacer-pizza-hawaiana.jpg',
-      price:230
-    },
-    {
-      id: 2,
-      name: 'Pizza',
-      description: 'Hawaiana',
-      category:'Food',
-      image:'https://cdn2.cocinadelirante.com/sites/default/files/images/2019/11/como-hacer-pizza-hawaiana.jpg',
-      price:230
-    },
-    {
-      id: 3,
-      name: 'Pizza',
-      description: 'Hawaiana',
-      category:'Food',
-      image:'https://cdn2.cocinadelirante.com/sites/default/files/images/2019/11/como-hacer-pizza-hawaiana.jpg',
-      price:230
-    },
-    {
-      id: 4,
-      name: 'Pizza',
-      description: 'Hawaiana',
-      category:'Food',
-      image:'https://cdn2.cocinadelirante.com/sites/default/files/images/2019/11/como-hacer-pizza-hawaiana.jpg',
-      price:230
-    },
-    {
-      id: 5,
-      name: 'Pizza',
-      description: 'Hawaiana',
-      category:'Food',
-      image:'https://cdn2.cocinadelirante.com/sites/default/files/images/2019/11/como-hacer-pizza-hawaiana.jpg',
-      price:230
-    },
-  ]
-  constructor() { }
+ 
 
-  public getAllFoods():Food[]{
-    return this.menu;
-  }
+  API_URL:string= '';
 
-  public getOne(id: number): Food | undefined {
-    return this.menu.find(item => item.id == id);
-  }
+  constructor(private http:HttpClient) {
+    this.API_URL = `${environment.API_URL}`
+   }
 
-  //Añadir nueva comida 
-  public addFood(food:Food){
-    this.menu.push(food);
-  }
+   public getAll():Observable<Food[]>{
+    return this.http.get<Food[]>(this.API_URL + 'food/all');
+   }
 
-  //Actualizar comida
-  public updateFood(newFood:Food){
-    this.menu.forEach((food, index)=>{
-      if(food.id == newFood.id){
-        this.menu[index] = newFood;
-      }
-    })
-  }
+   public addFood(food:Food):Observable<Food>{
+    return this.http.post<Food>(this.API_URL + 'food/save', food);
+   }
 
-  //Eliminar comida
-  public deleteFood(deleteFood:Food){
-    this.menu.forEach((food, index)=>{
+   public deleteFood(deleteFood:Food):Observable<unknown>{
+    return this.http.delete(this.API_URL + 'food/delete/' + deleteFood.id);
+   }
 
-      if (food.id == deleteFood.id){
-        this.menu.splice(index,1)
-      }
-
-    })
-  }
+   public getOneFood(id:number):Observable<Food>{
+    return this.http.get<Food>(this.API_URL + 'food/find/' + id);
+   }
 }
