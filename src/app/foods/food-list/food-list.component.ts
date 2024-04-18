@@ -8,14 +8,14 @@ import { FoodComponent } from '../food/food.component';
 @Component({
   selector: 'app-food-list',
   standalone: true,
-  imports: [MatCardModule, NgOptimizedImage, FoodComponent],
+  imports: [FoodComponent],
   templateUrl: './food-list.component.html',
   styleUrl: './food-list.component.scss'
 })
 export class FoodListComponent implements OnInit {
   data: Food[] = [];
 
-  constructor(public serviceFood: FoodService) {
+  constructor(private serviceFood: FoodService) {
   }
 
   ngOnInit(): void {
@@ -24,7 +24,5 @@ export class FoodListComponent implements OnInit {
       error: (e) => console.error (e),
       complete: () => console.info ('complete'),
     });
-    // this.data = this.serviceFood.getAllFoods();
-    console.log(this.data)
   }
 }
